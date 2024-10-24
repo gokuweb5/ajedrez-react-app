@@ -5,7 +5,7 @@ import { Chessboard } from 'react-chessboard';
 import { useNavigate } from 'react-router-dom';
 import { acceptChallenge, declineChallenge, getOnlineUsers, makeMove, sendChallenge } from '../api';
 import { useAuth } from '../context/AuthContext';
-import { disconnect, initializeWebSocket, sendChessMove, subscribeToGameUpdates } from '../utils/websocket';
+import { disconnect, initializeWebSocket, subscribeToGameUpdates } from '../utils/websocket';
 import Chat from './Chat';
 import ChessClock from './ChessClock';
 import OnlineUsers from './OnlineUsers';
@@ -133,15 +133,18 @@ function ChessGame() {
     const gameCopy = new Chess(game.fen());
     const result = gameCopy.move(move);
     if (result) {
-      setGame(gameCopy);
-      if (!checkGameStatus(gameCopy)) {
-        setIsPlayerTurn(false);
-      }
       try {
-        await makeMove(gameId, move, gameCopy.fen());
-        sendChessMove(gameId, move, gameCopy.fen());
+        // Envía el movimiento al servidor a través de API REST
+        const updatedGame = await makeMove(gameId, move, gameCopy.fen());
+        
+        // Actualiza el estado local con la respuesta del servidor
+        setGame(new Chess(updatedGame.fen));
+        setIsPlayerTurn(updatedGame.turn === playerColor);
+        checkGameStatus(new Chess(updatedGame.fen));
       } catch (error) {
         console.error('Error making move:', error);
+        // Revertir el movimiento local si hay un error
+        setGame(game);
       }
     }
     return result;

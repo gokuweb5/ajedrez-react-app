@@ -56,13 +56,13 @@ export const createGame = async (whitePlayerId, blackPlayerId, initialTime) => {
   }
 };
 
-export const makeMove = async (gameId, move, newPosition) => {
+export const makeMove = async (gameId, move, fen) => {
   try {
-    const response = await api.post(`/games/${gameId}/move`, { move, newPosition });
+    const response = await api.post(`/games/${gameId}/move`, { move, fen });
     return response.data;
   } catch (error) {
     console.error('Error al realizar el movimiento:', error);
-    throw error.response.data;
+    throw error.response?.data || error;
   }
 };
 
