@@ -6,6 +6,7 @@ function Register() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [rating, setRating] = useState(1000); // Estado para el rating
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { register } = useAuth();
@@ -20,7 +21,7 @@ function Register() {
     setError('');
     setIsLoading(true);
     try {
-      await register(username, email, password);
+      await register(username, email, password, rating); // Incluir rating
       alert('Registro exitoso. Por favor, inicia sesión.');
       navigate('/login');
     } catch (error) {
@@ -54,6 +55,13 @@ function Register() {
           placeholder="Contraseña"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <input
+          type="number"
+          placeholder="Rating (1000-3200)"
+          value={rating}
+          onChange={(e) => setRating(Math.min(Math.max(e.target.value, 1000), 3200))}
           required
         />
         <button type="submit" disabled={isLoading}>

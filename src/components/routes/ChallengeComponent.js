@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { acceptChallenge, declineChallenge, getChallenges, getOnlineUsers, sendChallenge } from '../api';
+import { acceptChallenge, declineChallenge, getChallenges, getOnlineUsers, sendChallenge } from '../../api';
 
 function ChallengeComponent({ currentUserId }) {
   const [challenges, setChallenges] = useState([]);
   const [challengeUserId, setChallengeUserId] = useState('');
   const [onlineUsers, setOnlineUsers] = useState([]);
+  const [selectedTime, setSelectedTime] = useState('10'); // Tiempo de juego por defecto
 
   useEffect(() => {
     fetchOnlineUsers();
@@ -30,8 +31,12 @@ function ChallengeComponent({ currentUserId }) {
   };
 
   const handleSendChallenge = async () => {
+    if (!challengeUserId) {
+      alert('Por favor, selecciona un usuario para desafiar.');
+      return;
+    }
     try {
-      await sendChallenge(currentUserId, challengeUserId);
+      await sendChallenge(currentUserId, challengeUserId, selectedTime);
       alert('Desafío enviado con éxito');
       fetchChallenges();
     } catch (error) {
@@ -45,7 +50,7 @@ function ChallengeComponent({ currentUserId }) {
       await acceptChallenge(challengeId);
       alert('Desafío aceptado');
       fetchChallenges();
-      // Aquí podrías redirigir al juego, por ejemplo:
+      // Redirigir al juego
       // history.push(`/game/${challengeId}`);
     } catch (error) {
       console.error('Error al aceptar desafío:', error);

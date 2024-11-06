@@ -1,9 +1,11 @@
 .chat-container {
   width: 400px; /* Ajusta este valor según lo ancho que quieras que sea */
   margin: 0 auto;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  border: 1px solid #e2e8f0; /* Color de borde más suave */
+  border-radius: 8px; /* Esquinas más redondeadas */
   padding: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
+  background-color: #ffffff; /* Fondo blanco para el contenedor */
 }
 
 .chat-messages {
@@ -11,23 +13,52 @@
   overflow-y: auto;
   margin-bottom: 10px;
   padding: 10px;
-  background-color: #f9f9f9;
+  background-color: #f7fafc; /* Color de fondo más suave */
+  border-radius: 5px; /* Esquinas redondeadas para el área de mensajes */
+  border: 1px solid #e2e8f0; /* Borde suave */
 }
 
 .chat-message {
   margin-bottom: 10px;
+  padding: 8px; /* Espaciado interno para los mensajes */
+  border-radius: 5px; /* Esquinas redondeadas para los mensajes */
+  background-color: #edf2f7; /* Color de fondo para los mensajes */
+  transition: background-color 0.3s; /* Transición suave para el hover */
+}
+
+.chat-message:hover {
+  background-color: #e2e8f0; /* Color de fondo al pasar el mouse */
 }
 
 .chat-form {
   display: flex;
+  align-items: center; /* Alinea verticalmente los elementos del formulario */
 }
 
 .chat-form input {
   flex-grow: 1;
   margin-right: 10px;
-  padding: 5px;
+  padding: 10px; /* Espaciado interno más grande */
+  border: 1px solid #cbd5e0; /* Borde suave */
+  border-radius: 5px; /* Esquinas redondeadas */
+  transition: border-color 0.3s; /* Transición suave para el borde */
+}
+
+.chat-form input:focus {
+  border-color: #3182ce; /* Color de borde al enfocar */
+  outline: none; /* Elimina el contorno predeterminado */
 }
 
 .chat-form button {
-  padding: 5px 10px;
+  padding: 10px 15px; /* Espaciado interno más grande */
+  background-color: #3182ce; /* Color de fondo del botón */
+  color: white; /* Color del texto del botón */
+  border: none; /* Sin borde */
+  border-radius: 5px; /* Esquinas redondeadas */
+  cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+  transition: background-color 0.3s; /* Transición suave para el hover */
+}
+
+.chat-form button:hover {
+  background-color: #2b6cb0; /* Color de fondo al pasar el mouse */
 }

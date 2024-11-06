@@ -1,28 +1,19 @@
 .chess-clock {
-  display: flex;
-  justify-content: space-between;
-  width: 400px;
-  margin-bottom: 20px;
+  @apply flex justify-between w-96 mb-5; /* 400px = 96 (en Tailwind) */
 }
 
 .player-clock {
-  padding: 10px;
-  background-color: #f0f0f0;
-  border-radius: 5px;
+  @apply p-2 bg-gray-200 rounded; /* Padding, color de fondo y esquinas redondeadas */
 }
 
 .player-clock.active {
-  background-color: #e0e0e0;
-  font-weight: bold;
+  @apply bg-gray-300 font-bold; /* Color de fondo y texto en negrita para el reloj activo */
 }
 
 .chess-board-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  @apply flex flex-col items-center; /* Flexbox para la columna y alineación centrada */
 }
 
 .player-name {
-  margin: 10px 0;
-  font-weight: bold;
+  @apply my-2 font-bold; /* Margen vertical y texto en negrita */
 }

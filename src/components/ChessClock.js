@@ -16,11 +16,16 @@ const TIME_OPTIONS = {
   }
 };
 
-function ChessClock({ isPlayerTurn, gameStarted, onGameOver }) {
+function ChessClock({ isPlayerTurn, gameStarted, onGameOver, initialTime, onTimeChange }) {
   const [timeCategory, setTimeCategory] = useState('Rapid');
   const [timeOption, setTimeOption] = useState('10 minutos');
-  const [whiteTime, setWhiteTime] = useState(TIME_OPTIONS[timeCategory][timeOption]);
-  const [blackTime, setBlackTime] = useState(TIME_OPTIONS[timeCategory][timeOption]);
+  const [whiteTime, setWhiteTime] = useState(initialTime);
+  const [blackTime, setBlackTime] = useState(initialTime);
+
+  useEffect(() => {
+    setWhiteTime(initialTime);
+    setBlackTime(initialTime);
+  }, [initialTime]);
 
   useEffect(() => {
     let timer;
@@ -58,6 +63,7 @@ function ChessClock({ isPlayerTurn, gameStarted, onGameOver }) {
     const newTime = TIME_OPTIONS[newCategory][newOption];
     setWhiteTime(newTime);
     setBlackTime(newTime);
+    onTimeChange && onTimeChange(newTime);
   };
 
   const handleTimeOptionChange = (e) => {
@@ -66,6 +72,7 @@ function ChessClock({ isPlayerTurn, gameStarted, onGameOver }) {
     const newTime = TIME_OPTIONS[timeCategory][newOption];
     setWhiteTime(newTime);
     setBlackTime(newTime);
+    onTimeChange && onTimeChange(newTime);
   };
 
   const formatTime = (seconds) => {
@@ -75,26 +82,34 @@ function ChessClock({ isPlayerTurn, gameStarted, onGameOver }) {
   };
 
   return (
-    <div className="chess-clock">
-      {!gameStarted && (
-        <div>
-          <select value={timeCategory} onChange={handleTimeCategoryChange}>
+    <div className="chess-clock p-4 border rounded shadow-md bg-white">
+      {!gameStarted && onTimeChange && (
+        <div className="mb-4">
+          <select 
+            value={timeCategory} 
+            onChange={handleTimeCategoryChange} 
+            className="border rounded p-2 mr-2"
+          >
             {Object.keys(TIME_OPTIONS).map(category => (
               <option key={category} value={category}>{category}</option>
             ))}
           </select>
-          <select value={timeOption} onChange={handleTimeOptionChange}>
+          <select 
+            value={timeOption} 
+            onChange={handleTimeOptionChange} 
+            className="border rounded p-2"
+          >
             {Object.keys(TIME_OPTIONS[timeCategory]).map(option => (
               <option key={option} value={option}>{option}</option>
             ))}
           </select>
         </div>
       )}
-      <div className="clocks">
-        <div className={`clock ${!isPlayerTurn && gameStarted ? 'active' : ''}`}>
+      <div className="clocks flex justify-between">
+        <div className={`clock ${!isPlayerTurn && gameStarted ? 'bg-gray-200' : 'bg-gray-300'} p-4 rounded`}>
           Negro: {formatTime(blackTime)}
         </div>
-        <div className={`clock ${isPlayerTurn && gameStarted ? 'active' : ''}`}>
+        <div className={`clock ${isPlayerTurn && gameStarted ? 'bg-gray-200' : 'bg-gray-300'} p-4 rounded`}>
           Blanco: {formatTime(whiteTime)}
         </div>
       </div>
