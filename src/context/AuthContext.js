@@ -1,5 +1,5 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
-import { verifyToken } from '../api';
+import { register as apiRegister, verifyToken } from '../api';
 
 const AuthContext = createContext(null);
 
@@ -200,6 +200,10 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const register = async (username, email, password, rating) => {
+    return await apiRegister(username, email, password, rating);
+  };
+
   return (
     <AuthContext.Provider value={{ 
       user, 
@@ -209,7 +213,8 @@ export const AuthProvider = ({ children }) => {
       error,
       isAuthenticated: !!user,
       refreshToken,
-      verifyAuthentication
+      verifyAuthentication,
+      register
     }}>
       {children}
     </AuthContext.Provider>

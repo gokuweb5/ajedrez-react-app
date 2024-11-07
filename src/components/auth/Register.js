@@ -6,7 +6,7 @@ function Register() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [rating, setRating] = useState(1000); // Estado para el rating
+  const [rating, setRating] = useState(1000);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { register } = useAuth();
@@ -21,7 +21,7 @@ function Register() {
     setError('');
     setIsLoading(true);
     try {
-      await register(username, email, password, rating); // Incluir rating
+      await register(username, email, password, rating);
       alert('Registro exitoso. Por favor, inicia sesión.');
       navigate('/login');
     } catch (error) {
@@ -32,16 +32,18 @@ function Register() {
   };
 
   return (
-    <div>
-      <h2>Registrarse</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <form onSubmit={handleSubmit}>
+    <div className="max-w-md mx-auto p-4 border rounded shadow-md bg-white">
+      <h2 className="text-2xl font-bold mb-4">Registrarse</h2>
+      {error && <p className="text-red-500">{error}</p>}
+      <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="text"
           placeholder="Nombre de usuario"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           required
+          className="w-full p-2 border rounded"
+          aria-label="Nombre de usuario"
         />
         <input
           type="email"
@@ -49,6 +51,8 @@ function Register() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
+          className="w-full p-2 border rounded"
+          aria-label="Correo electrónico"
         />
         <input
           type="password"
@@ -56,6 +60,8 @@ function Register() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
+          className="w-full p-2 border rounded"
+          aria-label="Contraseña"
         />
         <input
           type="number"
@@ -63,12 +69,18 @@ function Register() {
           value={rating}
           onChange={(e) => setRating(Math.min(Math.max(e.target.value, 1000), 3200))}
           required
+          className="w-full p-2 border rounded"
+          aria-label="Rating"
         />
-        <button type="submit" disabled={isLoading}>
+        <button
+          type="submit"
+          disabled={isLoading}
+          className={`w-full p-2 rounded ${isLoading ? 'bg-gray-400' : 'bg-blue-500 hover:bg-blue-700'} text-white font-bold`}
+        >
           {isLoading ? 'Registrando...' : 'Registrarse'}
         </button>
       </form>
-      <p>¿Ya tienes una cuenta? <Link to="/login">Inicia sesión aquí</Link></p>
+      <p className="mt-4">¿Ya tienes una cuenta? <Link to="/login" className="text-blue-500 hover:underline">Inicia sesión aquí</Link></p>
     </div>
   );
 }

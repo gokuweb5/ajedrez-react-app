@@ -53,11 +53,13 @@ function Login() {
       }
     } catch (error) {
       console.error('Error en login:', error);
-      setError(
-        error.response?.data?.message || 
-        error.message || 
-        'Error al iniciar sesión. Por favor, intente nuevamente.'
-      );
+      if (error.response) {
+        // Si hay una respuesta del servidor, usa el mensaje de error específico
+        setError(error.response.data.message || 'Error desconocido del servidor.');
+      } else {
+        // Si no hay respuesta, es un error de red o similar
+        setError('Error al iniciar sesión. Por favor, intente nuevamente.');
+      }
     } finally {
       setIsLoading(false);
     }

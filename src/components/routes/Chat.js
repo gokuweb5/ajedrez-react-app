@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { sendChatMessage, subscribeToChatMessages } from '../../utils/websocket';
 
 function Chat({ gameId, username }) {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
+  const messagesEndRef = useRef(null);
 
   useEffect(() => {
     const unsubscribe = subscribeToChatMessages(gameId, (message) => {
@@ -11,9 +12,13 @@ function Chat({ gameId, username }) {
     });
 
     return () => {
-      unsubscribe(); // Esto desuscribirá del chat cuando el componente se desmonte
+      unsubscribe();
     };
   }, [gameId]);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
@@ -38,6 +43,7 @@ function Chat({ gameId, username }) {
             <span className="ml-2">{msg.content}</span>
           </div>
         ))}
+        <div ref={messagesEndRef} />
       </div>
       <form onSubmit={handleSendMessage} className="flex">
         <input
